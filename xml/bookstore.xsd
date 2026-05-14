@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- bookstore.xsd - XML Schema Definition for EduTrack Bookstore -->
+<!-- More powerful than DTD: supports data types, constraints, namespaces -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+  <!-- Root element -->
+  <xs:element name="bookstore">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="category" type="CategoryType" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="name"        type="xs:string"  use="required"/>
+      <xs:attribute name="established" type="xs:integer" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Category Type -->
+  <xs:complexType name="CategoryType">
+    <xs:sequence>
+      <xs:element name="book" type="BookType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Book Type -->
+  <xs:complexType name="BookType">
+    <xs:sequence>
+      <xs:element name="title"       type="xs:string"/>
+      <xs:element name="author"      type="AuthorType"/>
+      <xs:element name="isbn"        type="ISBNType"/>
+      <xs:element name="publisher"   type="xs:string"/>
+      <xs:element name="year"        type="YearType"/>
+      <xs:element name="edition"     type="xs:string"/>
+      <xs:element name="price"       type="PriceType"/>
+      <xs:element name="pages"       type="xs:positiveInteger"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="subjects"    type="SubjectsType"/>
+      <xs:element name="rating"      type="RatingType"/>
+    </xs:sequence>
+    <xs:attribute name="id"        type="xs:ID"      use="required"/>
+    <xs:attribute name="available" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <!-- Author Type -->
+  <xs:complexType name="AuthorType">
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname"  type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ISBN Type - pattern validation -->
+  <xs:simpleType name="ISBNType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="978-[0-9]-[0-9]{2}-[0-9]{6}-[0-9]"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Year Type - range validation -->
+  <xs:simpleType name="YearType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1900"/>
+      <xs:maxInclusive value="2099"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Price Type - with currency attribute -->
+  <xs:complexType name="PriceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="currency" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="INR"/>
+              <xs:enumeration value="USD"/>
+              <xs:enumeration value="EUR"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Subjects Type -->
+  <xs:complexType name="SubjectsType">
+    <xs:sequence>
+      <xs:element name="subject" type="xs:string" minOccurs="1" maxOccurs="10"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Rating Type - 0.0 to 5.0 -->
+  <xs:simpleType name="RatingType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0.0"/>
+      <xs:maxInclusive value="5.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

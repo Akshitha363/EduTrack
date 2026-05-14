@@ -1,0 +1,40 @@
+<!-- bookstore.dtd - Document Type Definition for EduTrack Bookstore XML -->
+<!-- Defines the structure and rules for bookstore.xml -->
+
+<!ELEMENT bookstore (category+)>
+<!ATTLIST bookstore
+  name        CDATA    #REQUIRED
+  established CDATA    #REQUIRED
+>
+
+<!ELEMENT category (book+)>
+<!ATTLIST category
+  name CDATA #REQUIRED
+>
+
+<!ELEMENT book (title, author, isbn, publisher, year, edition, price, pages, description, subjects, rating)>
+<!ATTLIST book
+  id        ID           #REQUIRED
+  available (true|false) #REQUIRED
+>
+
+<!ELEMENT title      (#PCDATA)>
+<!ELEMENT isbn       (#PCDATA)>
+<!ELEMENT publisher  (#PCDATA)>
+<!ELEMENT year       (#PCDATA)>
+<!ELEMENT edition    (#PCDATA)>
+<!ELEMENT pages      (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT rating     (#PCDATA)>
+
+<!ELEMENT author (firstname, lastname)>
+<!ELEMENT firstname (#PCDATA)>
+<!ELEMENT lastname  (#PCDATA)>
+
+<!ELEMENT price (#PCDATA)>
+<!ATTLIST price
+  currency CDATA #REQUIRED
+>
+
+<!ELEMENT subjects (subject+)>
+<!ELEMENT subject (#PCDATA)>

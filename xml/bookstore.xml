@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookstore SYSTEM "bookstore.dtd">
+<!-- bookstore.xml - XML Document for EduTrack Digital Library Module -->
+<!-- This demonstrates XML usage as required by WAD syllabus -->
+
+<bookstore name="EduTrack Digital Library" established="2024">
+  
+  <category name="Web Development">
+    <book id="BK001" available="true">
+      <title>Web Application Development with Node.js</title>
+      <author>
+        <firstname>James</firstname>
+        <lastname>Smith</lastname>
+      </author>
+      <isbn>978-0-13-110362-7</isbn>
+      <publisher>Tech Press</publisher>
+      <year>2023</year>
+      <edition>3rd</edition>
+      <price currency="INR">599.00</price>
+      <pages>450</pages>
+      <description>Complete guide to building web applications using Node.js, Express, and modern JavaScript</description>
+      <subjects>
+        <subject>Node.js</subject>
+        <subject>Express.js</subject>
+        <subject>REST APIs</subject>
+        <subject>JavaScript</subject>
+      </subjects>
+      <rating>4.5</rating>
+    </book>
+    
+    <book id="BK002" available="true">
+      <title>React.js in Action</title>
+      <author>
+        <firstname>Sarah</firstname>
+        <lastname>Johnson</lastname>
+      </author>
+      <isbn>978-1-49-192462-4</isbn>
+      <publisher>Manning Publications</publisher>
+      <year>2023</year>
+      <edition>2nd</edition>
+      <price currency="INR">749.00</price>
+      <pages>380</pages>
+      <description>Building modern user interfaces with React, hooks, and state management</description>
+      <subjects>
+        <subject>React.js</subject>
+        <subject>JSX</subject>
+        <subject>Hooks</subject>
+        <subject>Redux</subject>
+      </subjects>
+      <rating>4.7</rating>
+    </book>
+  </category>
+
+  <category name="Database Management">
+    <book id="BK003" available="true">
+      <title>MySQL: The Complete Reference</title>
+      <author>
+        <firstname>Vikram</firstname>
+        <lastname>Vaswani</lastname>
+      </author>
+      <isbn>978-0-07-222477-4</isbn>
+      <publisher>McGraw-Hill</publisher>
+      <year>2022</year>
+      <edition>4th</edition>
+      <price currency="INR">499.00</price>
+      <pages>520</pages>
+      <description>Comprehensive guide to MySQL database design, queries, and optimization</description>
+      <subjects>
+        <subject>MySQL</subject>
+        <subject>SQL</subject>
+        <subject>Database Design</subject>
+        <subject>Optimization</subject>
+      </subjects>
+      <rating>4.3</rating>
+    </book>
+  </category>
+
+  <category name="Data Structures">
+    <book id="BK004" available="false">
+      <title>Introduction to Algorithms</title>
+      <author>
+        <firstname>Thomas</firstname>
+        <lastname>Cormen</lastname>
+      </author>
+      <isbn>978-0-26-204630-5</isbn>
+      <publisher>MIT Press</publisher>
+      <year>2022</year>
+      <edition>4th</edition>
+      <price currency="INR">899.00</price>
+      <pages>1312</pages>
+      <description>The definitive reference for algorithms and data structures - CLRS</description>
+      <subjects>
+        <subject>Algorithms</subject>
+        <subject>Data Structures</subject>
+        <subject>Graph Theory</subject>
+        <subject>Dynamic Programming</subject>
+      </subjects>
+      <rating>4.9</rating>
+    </book>
+  </category>
+
+</bookstore>
