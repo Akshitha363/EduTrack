@@ -1,6 +1,9 @@
 // server.js - EduTrack Backend (Clean Production Version)
 
 const express = require('express');
+app.get("/", (req, res) => {
+  res.send("EduTrack Backend Running");
+});
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -44,9 +47,7 @@ app.use((req, res, next) => {
 // ROOT ROUTE (FIXED - MUST BE BEFORE 404)
 // ──────────────────────────────────────────
 
-app.get("/", (req, res) => {
-  res.send("EduTrack Backend Running");
-});
+
 
 // ──────────────────────────────────────────
 // HEALTH CHECK
