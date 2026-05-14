@@ -14,8 +14,10 @@ console.log("🔥 SERVER.JS LOADED CORRECTLY");
 // ──────────────────────────────────────────
 
 app.get("/", (req, res) => {
-  console.log("ROOT ROUTE HIT");
-  res.send("EduTrack Backend Running");
+  res.json({
+    success: true,
+    message: "EduTrack Backend is running 🚀"
+  });
 });
 
 // ──────────────────────────────────────────
