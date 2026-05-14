@@ -93,6 +93,9 @@ app.use((err, req, res, next) => {
 // ──────────────────────────────────────────
 // START SERVER
 // ──────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.send("EduTrack Backend Running");
+});
 
 app.listen(PORT, () => {
   console.log(`
