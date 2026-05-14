@@ -1,6 +1,4 @@
-// server.js - Main Express Server (Controller Layer - Servlet Equivalent in WAD)
-// In traditional Java WAD: Servlets act as controllers between client requests and business logic
-// In Node.js Express: Route handlers + middleware serve the same controller role
+// server.js - EduTrack Backend (Clean Production Version)
 
 const express = require('express');
 const cors = require('cors');
@@ -10,30 +8,32 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 console.log("🔥 SERVER.JS LOADED CORRECTLY");
+
 // ──────────────────────────────────────────
-// MIDDLEWARE (Request Pipeline)
+// MIDDLEWARE
 // ──────────────────────────────────────────
 
-// CORS - Allow frontend to communicate with backend
+// CORS setup
 app.use(cors({
   origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
-  credentials: true, // Allow cookies (session tracking)
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Parse JSON request bodies (ES6: arrow functions, async/await used throughout)
+// Body parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Cookie parser for session tracking (JWT via cookies)
+// Cookies
 app.use(cookieParser());
 
-// Serve static uploads folder (lecture notes, assignment files)
+// Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Request Logger Middleware
+// Logger middleware
 app.use((req, res, next) => {
   const timestamp = new Date().toISOString();
   console.log(`[${timestamp}] ${req.method} ${req.url}`);
@@ -41,7 +41,29 @@ app.use((req, res, next) => {
 });
 
 // ──────────────────────────────────────────
-// API ROUTES (REST API Endpoints)
+// ROOT ROUTE (FIXED - MUST BE BEFORE 404)
+// ──────────────────────────────────────────
+
+app.get("/", (req, res) => {
+  res.send("EduTrack Backend Running");
+});
+
+// ──────────────────────────────────────────
+// HEALTH CHECK
+// ──────────────────────────────────────────
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'EduTrack API is running',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// ──────────────────────────────────────────
+// API ROUTES
 // ──────────────────────────────────────────
 
 app.use('/api/auth', require('./routes/auth'));
@@ -54,34 +76,28 @@ app.use('/api/notes', require('./routes/notes'));
 app.use('/api/notifications', require('./routes/notifications'));
 
 // ──────────────────────────────────────────
-// HEALTH CHECK
+// 404 HANDLER (MUST BE LAST)
 // ──────────────────────────────────────────
 
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'EduTrack API is running',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`
   });
 });
 
 // ──────────────────────────────────────────
-// ERROR HANDLING MIDDLEWARE
+// GLOBAL ERROR HANDLER
 // ──────────────────────────────────────────
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.url} not found` });
-});
-
-// Global Error Handler
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.stack);
+  console.error("❌ Error:", err.stack);
 
   if (err.code === 'LIMIT_FILE_SIZE') {
-    return res.status(413).json({ success: false, message: 'File too large. Max 10MB allowed.' });
+    return res.status(413).json({
+      success: false,
+      message: 'File too large. Max 10MB allowed.'
+    });
   }
 
   res.status(err.status || 500).json({
@@ -93,18 +109,15 @@ app.use((err, req, res, next) => {
 // ──────────────────────────────────────────
 // START SERVER
 // ──────────────────────────────────────────
-app.get("/", (req, res) => {
-  res.send("EduTrack Backend Running");
-});
 
 app.listen(PORT, () => {
   console.log(`
-  ╔══════════════════════════════════════════╗
-  ║     EduTrack API Server Started          ║
-  ║     Port: ${PORT}                            ║
-  ║     Mode: ${process.env.NODE_ENV || 'development'}               ║
-  ║     Docs: http://localhost:${PORT}/api      ║
-  ╚══════════════════════════════════════════╝
+╔══════════════════════════════════════════╗
+║     EduTrack API Server Started          ║
+║     Port: ${PORT}                        ║
+║     Mode: ${process.env.NODE_ENV || 'development'}     ║
+║     Docs: http://localhost:${PORT}/api   ║
+╚══════════════════════════════════════════╝
   `);
 });
 
