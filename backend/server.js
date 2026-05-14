@@ -1,9 +1,4 @@
-// server.js - EduTrack Backend (Clean Production Version)
-
 const express = require('express');
-app.get("/", (req, res) => {
-  res.send("EduTrack Backend Running");
-});
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -15,10 +10,18 @@ const PORT = process.env.PORT || 5000;
 console.log("🔥 SERVER.JS LOADED CORRECTLY");
 
 // ──────────────────────────────────────────
+// ROOT ROUTE (MUST BE AFTER app creation)
+// ──────────────────────────────────────────
+
+app.get("/", (req, res) => {
+  console.log("ROOT ROUTE HIT");
+  res.send("EduTrack Backend Running");
+});
+
+// ──────────────────────────────────────────
 // MIDDLEWARE
 // ──────────────────────────────────────────
 
-// CORS setup
 app.use(cors({
   origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
@@ -26,28 +29,16 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Body parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Cookies
 app.use(cookieParser());
 
-// Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Logger middleware
 app.use((req, res, next) => {
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${req.method} ${req.url}`);
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
-
-// ──────────────────────────────────────────
-// ROOT ROUTE (FIXED - MUST BE BEFORE 404)
-// ──────────────────────────────────────────
-
-
 
 // ──────────────────────────────────────────
 // HEALTH CHECK
@@ -77,7 +68,7 @@ app.use('/api/notes', require('./routes/notes'));
 app.use('/api/notifications', require('./routes/notifications'));
 
 // ──────────────────────────────────────────
-// 404 HANDLER (MUST BE LAST)
+// 404 HANDLER (LAST)
 // ──────────────────────────────────────────
 
 app.use((req, res) => {
@@ -88,18 +79,11 @@ app.use((req, res) => {
 });
 
 // ──────────────────────────────────────────
-// GLOBAL ERROR HANDLER
+// ERROR HANDLER
 // ──────────────────────────────────────────
 
 app.use((err, req, res, next) => {
   console.error("❌ Error:", err.stack);
-
-  if (err.code === 'LIMIT_FILE_SIZE') {
-    return res.status(413).json({
-      success: false,
-      message: 'File too large. Max 10MB allowed.'
-    });
-  }
 
   res.status(err.status || 500).json({
     success: false,
@@ -117,7 +101,6 @@ app.listen(PORT, () => {
 ║     EduTrack API Server Started          ║
 ║     Port: ${PORT}                        ║
 ║     Mode: ${process.env.NODE_ENV || 'development'}     ║
-║     Docs: http://localhost:${PORT}/api   ║
 ╚══════════════════════════════════════════╝
   `);
 });
